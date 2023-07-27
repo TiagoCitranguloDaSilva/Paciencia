@@ -1,0 +1,177 @@
+@charset "UTF-8";
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-y: hidden;
+}
+
+.coluna{
+    margin: 30px 0px;
+    height: 70vh;
+    position: relative;
+}
+
+#mesa{
+    background-color: #702d00;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0px 5px 3px rgba(0, 0, 0, .1) inset;
+    display: flex;
+    justify-content: center;
+}
+
+.espada{
+    background-image: url('img/espada-pronto.png');
+}
+
+.copas{
+    background-image: url('img/Copas-pronto.png');
+}
+
+.paus{
+    background-image: url('img/paus-pronto.png');
+}
+
+.ouros{
+    background-image: url('img/Ouros-pronto.png');
+}
+
+
+.cartas{
+    background-color: lightgray;
+    background-size: 120px 110px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 120px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4.5em;
+    -webkit-text-stroke: 2px white;
+    border: 1px solid black;
+}
+
+#container{
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-between;
+
+}
+
+#blur{
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+#blur_buttons{
+    background-color: #702d00;
+    height: 200px;
+    width: max-content;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-content: center;
+    align-items: center;
+    border: 10px solid #502000;
+    border-radius: 15px;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, .8) inset;
+}
+
+.botao_escolha{
+    margin: 10px;
+    height: 25px;
+    width: 100px;
+    background-color: cyan;
+    border: 1px solid gray;
+    width: 100px;
+    height: 60px;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, .2);
+}
+
+.botao_escolha:active{
+    box-shadow: none;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .6) inset;
+}
+
+.botao_escolha:disabled{
+    background-color: gray;
+}
+
+#pesca{
+    box-sizing: border-box;
+    height: 100%;
+    min-width: 200px;
+    display: grid;
+    grid-template-columns: 80px 80px;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+#finalizados{
+    height: 100%;
+    min-width: 600px;
+    position: relative;
+}
+
+#ParteCima{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    height: min-content;
+    background-color: rgb(56, 25, 0);
+}
+
+#mesa .cartas{
+    position: absolute;
+}
+
+#botao{
+    display: none;
+}
+
+.final{
+    height: 120px;
+    width: 80px;
+    border: 1px solid lightgray;
+}
+
+#AreaFinal{
+    position: absolute;
+    width: 500px;
+    display: grid;
+    grid-template-columns: repeat(4, 80px);
+    justify-content: space-around;
+    right: 40px;
+    top: calc(50% - 60px);
+}
+
+#btnPescar{
+    background-color: rgb(100, 100, 100);
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    color: white;
+    -webkit-text-stroke: 0;
+}
+
+.areaPesca{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: darkgray;
+    border: 3px solid white;
+}

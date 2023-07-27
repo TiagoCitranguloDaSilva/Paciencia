@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paciencia</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="img/icon.jpg" type="image/x-icon">
+</head>
+<body>
+    <main>
+        <section id="ParteCima">
+            <section id="pesca">
+                <section class="cartas areaPesca">
+                    <button onclick="pescar()" id="btnPescar">Pescar</button>
+                </section>
+                <button id="botao" onclick="devolver()">De novo</button>
+            </section>
+            <section id="finalizados">
+                <section id="AreaFinal">
+                    <section id="espada"class='final'></section>
+                    <section id="copas"class='final'></section>
+                    <section id="paus"class='final'></section>
+                    <section id="ouro"class='final'></section>
+                </section>
+            </section>
+        </section>
+        <section id="mesa">
+            <section id="container"></section>
+        </section>
+        <div id="blur">
+            <div id="blur_buttons">
+                <button id="1coluna_button" class="botao_escolha" onclick="escolha('1')">1ª coluna</button>
+                <button id="2coluna_button" class="botao_escolha" onclick="escolha('2')">2ª coluna</button>
+                <button id="3coluna_button" class="botao_escolha" onclick="escolha('3')">3ª coluna</button>
+                <button id="4coluna_button" class="botao_escolha" onclick="escolha('4')">4ª coluna</button>
+                <button id="5coluna_button" class="botao_escolha" onclick="escolha('5')">5ª coluna</button>
+                <button id="6coluna_button" class="botao_escolha" onclick="escolha('6')">6ª coluna</button>
+                <button id="areafinal_button" class="botao_escolha" onclick="escolha('7')">Área final</button>
+            </div>
+        </div>
+    </main>
+    <script src="code.js"></script>
+    <!-- 
+        Feito por Tiago Citrangulo da Silva em julho de 2023
+        Email para contato: tiagocitrangulo256@gmail.com
+    -->
+</body>
+</html>
