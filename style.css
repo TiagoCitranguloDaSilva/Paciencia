@@ -208,7 +208,9 @@ div#botoes{
 }
 
 .escondida{
-    background-color: purple;
+    background-color: rgb(214, 214, 214);
+    background-image: url('img/FundoCarta.png') !important;
+    background-size: cover;
     font-size: 0;
     -webkit-text-stroke: none;
     background-image: none;
