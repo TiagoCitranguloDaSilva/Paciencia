@@ -1,4 +1,7 @@
 
+var arrayTransicao = [];
+var pescasPossiveis = [];
+var ordem = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 var origem;
 var absoluteLocal = 40;
 var elemento;
@@ -60,10 +63,17 @@ function iniciarJogo(){
             colunaAtual.appendChild(cartaAtual);
         }
     }
+
+    let tam = CartasPossiveis.length
+    for(let c = 0; c <= tam; c++){
+        let escolhida = aleatorizar()
+        pescasPossiveis.push(CartasPossiveis[escolhida]);
+        CartasPossiveis.splice(escolhida, 1);
+    }
 }
 
 function aleatorizar(){
-    return Math.floor(Math.random() * (CartasPossiveis.length - 1)) + 1;
+    return Math.floor(Math.random() * (CartasPossiveis.length));
 }
 
 function criarCarta(escolha, classes, removerCartasPossiveis = false, aleatorizar = true){
@@ -80,6 +90,11 @@ function criarCarta(escolha, classes, removerCartasPossiveis = false, aleatoriza
         carta.classList.add(classes[c]);
     }
     carta.classList.add(escolhida[0]);
+    if(escolhida[0] == 'paus' || escolhida[0] == 'espada'){
+        carta.classList.add('preto');
+    }else{
+        carta.classList.add('vermelho');
+    }
     carta.setAttribute('onclick', 'mover(this)');
     carta.innerHTML = escolhida[1];
     carta.id = escolhida[0]+'-'+escolhida[1];
@@ -126,23 +141,82 @@ function escolha(valorEscolha){
 }
 
 function verificacoes(){
-    finalizar()
-}
+    
+    let localAdd;
+    let pos;
+    
+    if(local != 'AreaFinal'){
+        localAdd = document.getElementById(local);
+        pos = ordem.indexOf(elemento.innerHTML);
 
+        if(localAdd.children.length == 0 && elemento.innerHTML != 'K'){
+            return;
+        }
+
+        if(localAdd.children[localAdd.children.length-1].innerHTML != ordem[pos+1] ){
+            return;
+        }
+
+        if(localAdd.children[localAdd.children.length-1].classList[2] == elemento.classList[2]){
+            return;
+        }
+    }else if(local == 'AreaFinal'){
+        localAdd = document.getElementById(elemento.classList[1]);
+        
+        if(localAdd.children.length == 0 && elemento.innerHTML != 'A'){
+            return;
+        }
+
+        pos = ordem.indexOf(elemento.innerHTML);
+
+        if(localAdd.children.length > 0){
+            if(localAdd.children[localAdd.children.length-1].innerHTML != ordem[pos - 1]){
+                return;
+            }
+        }
+
+        finalizar();
+    }
+}
 function finalizar(){
     origem = elemento.parentElement.id;
     let localAdd;
+    let posCarta = document.getElementById(origem).children.lengh;
     if(local == 'AreaFinal'){
-        alert('n fiz ainda');
-    }else{
-        localAdd = document.getElementById(local);
+        local = elemento.classList[1];
     }
-    elemento.remove();
-    conteudo = [elemento.classList[1], elemento.innerHTML];
-    let cartaAtual = criarCarta(conteudo, [], false, false);
-    let altura = (localAdd.children.length) * absoluteLocal;
-    cartaAtual.style.top = altura+'px';
-    localAdd.appendChild(cartaAtual);
+    localAdd = document.getElementById(local);
+    
+    for(let c = 0; c < document.getElementById(origem).children.length; c++){
+        if(elemento.id == document.getElementById(origem).children[c].id){
+            posCarta = c;
+        }
+    }
+    let cont = 0;
+    let localCarta = posCarta;
+    while(posCarta <= document.getElementById(origem).children.length){
+        cont++;
+        let atual = document.getElementById(origem).children[localCarta];
+        conteudo = [atual.classList[1], atual.innerHTML];
+        let cartaAtual = criarCarta(conteudo, [], false, false);
+        let altura = (localAdd.children.length) * absoluteLocal;
+        cartaAtual.style.top = altura+'px';
+        localAdd.appendChild(cartaAtual);
+        atual.remove();
+        
+        if(origem == 'pesca'){
+            let areaPesca = document.getElementById(origem);
+            if(arrayTransicao.length > 0){
+                let cartaPesca = criarCarta(arrayTransicao[arrayTransicao.length-2], [], false, false);
+                areaPesca.appendChild(cartaPesca);
+            }
+            if(localAdd.children.length > 1){
+                localAdd.children[0].remove();
+            }
+            break;
+        }
+        posCarta++;
+    }
     
     aparecer()
 }
@@ -153,4 +227,32 @@ function aparecer(){
             document.getElementById(origem).children[document.getElementById(origem).children.length - 1].classList.remove('escondida');
         }
     }
+}
+
+function pescar(){
+    let areaPesca = document.getElementById('pesca');
+    if(pescasPossiveis.length == 0){
+        let botaoReiniciarPesca =  document.getElementById('botao');
+        botaoReiniciarPesca.style.display = 'flex';
+    }
+    arrayTransicao.push(pescasPossiveis[0]);
+    pescasPossiveis.splice(0, 1);
+    
+    if(areaPesca.children.length > 2){
+        areaPesca.children[2].remove();
+    }
+    
+    let carta = criarCarta(arrayTransicao[arrayTransicao.length-1], [], false, false);
+    areaPesca.appendChild(carta);
+}
+
+function devolver(){
+    while(arrayTransicao.length > 0){
+        pescasPossiveis.push(arrayTransicao[0]);
+        arrayTransicao.splice(0, 1);
+    }
+    let botaoReiniciarPesca =  document.getElementById('botao');
+    botaoReiniciarPesca.style.display = 'none';
+
+
 }
