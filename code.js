@@ -150,14 +150,17 @@ function verificacoes(){
         pos = ordem.indexOf(elemento.innerHTML);
 
         if(localAdd.children.length == 0 && elemento.innerHTML != 'K'){
+            // alert('N K');
             return;
         }
 
         if(localAdd.children[localAdd.children.length-1].innerHTML != ordem[pos+1] ){
+            // alert('Ordem errada');
             return;
         }
 
         if(localAdd.children[localAdd.children.length-1].classList[2] == elemento.classList[2]){
+            // alert('Cores iguais');
             return;
         }
     }else if(local == 'AreaFinal'){
@@ -175,8 +178,8 @@ function verificacoes(){
             }
         }
 
-        finalizar();
     }
+    finalizar();
 }
 function finalizar(){
     origem = elemento.parentElement.id;
