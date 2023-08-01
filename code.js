@@ -12,25 +12,25 @@ var qtdeColunas = 6;
 var CartasPossiveis = [];
 var Naipes = ['espada', 'copas', 'paus', 'ouros'];
 for(let c = 0; c < Naipes.length; c++){
-    for(let d = 1; d <= 13; d++){
-        let valor = d
-        switch(valor){
-            case 1:
-                valor = 'A';
-                break;
+    for(let d = 0; d < ordem.length; d++){
+        let valor = ordem[d]
+        // switch(valor){
+        //     case 1:
+        //         valor = 'A';
+        //         break;
             
-            case 11: 
-                valor = 'Q';
-                break;
+        //     case 11: 
+        //         valor = 'Q';
+        //         break;
             
-            case 12: 
-                valor = 'J';
-                break;
+        //     case 12: 
+        //         valor = 'J';
+        //         break;
             
-            case 13: 
-                valor = 'K';
-                break;
-        }
+        //     case 13: 
+        //         valor = 'K';
+        //         break;
+        // }
         CartasPossiveis.push([Naipes[c], valor]);
     }
 }
@@ -42,10 +42,16 @@ function iniciarJogo(){
 
         // Criar coluna
 
+        let areacoluna = document.createElement('section');
+        mesa.appendChild(areacoluna);
+        let sinalizador = document.createElement('section');
+        sinalizador.innerHTML = c+1;
+        sinalizador.classList.add('sinalizador');
+        areacoluna.appendChild(sinalizador);
         let coluna = document.createElement('section');
         coluna.id = 'coluna'+(c+1);
-        coluna.classList.add('coluna')
-        mesa.appendChild(coluna);
+        coluna.classList.add('coluna');
+        areacoluna.appendChild(coluna);
         let colunaAtual = document.getElementById('coluna'+(c+1));
         let escolhido;
         for(let d = 0; d <= c; d++){
@@ -70,6 +76,7 @@ function iniciarJogo(){
         pescasPossiveis.push(CartasPossiveis[escolhida]);
         CartasPossiveis.splice(escolhida, 1);
     }
+    contagem = pescasPossiveis.length;
 }
 
 function aleatorizar(){
@@ -102,6 +109,8 @@ function criarCarta(escolha, classes, removerCartasPossiveis = false, aleatoriza
     if(removerCartasPossiveis){
         CartasPossiveis.splice(escolha, 1);
     }
+
+    carta.setAttribute('data-content', escolhida[1]);
 
     return carta;
 }
@@ -154,14 +163,16 @@ function verificacoes(){
             return;
         }
 
-        if(localAdd.children[localAdd.children.length-1].innerHTML != ordem[pos+1] ){
-            // alert('Ordem errada');
-            return;
-        }
-
-        if(localAdd.children[localAdd.children.length-1].classList[2] == elemento.classList[2]){
-            // alert('Cores iguais');
-            return;
+        if(localAdd.children.length > 0){
+            if(localAdd.children[localAdd.children.length-1].innerHTML != ordem[pos+1] ){
+                // alert('Ordem errada');
+                return;
+            }
+    
+            if(localAdd.children[localAdd.children.length-1].classList[2] == elemento.classList[2]){
+                // alert('Cores iguais');
+                return;
+            }
         }
     }else if(local == 'AreaFinal'){
         localAdd = document.getElementById(elemento.classList[1]);
@@ -186,9 +197,10 @@ function finalizar(){
     let localAdd;
     let posCarta = document.getElementById(origem).children.lengh;
     if(local == 'AreaFinal'){
-        local = elemento.classList[1];
+        localAdd = document.getElementById(elemento.classList[1]);
+    }else{
+        localAdd = document.getElementById(local);
     }
-    localAdd = document.getElementById(local);
     
     for(let c = 0; c < document.getElementById(origem).children.length; c++){
         if(elemento.id == document.getElementById(origem).children[c].id){
@@ -197,7 +209,15 @@ function finalizar(){
     }
     let cont = 0;
     let localCarta = posCarta;
-    while(posCarta <= document.getElementById(origem).children.length){
+    while(posCarta < document.getElementById(origem).children.length){
+        if(local == 'AreaFinal'){
+            if(document.getElementById(origem).children.length - posCarta > 1){
+                return;
+            }
+            if(localAdd.children.length > 0){
+                localAdd.children[0].remove();
+            }
+        }
         cont++;
         let atual = document.getElementById(origem).children[localCarta];
         conteudo = [atual.classList[1], atual.innerHTML];
@@ -211,17 +231,21 @@ function finalizar(){
             let areaPesca = document.getElementById(origem);
             if(arrayTransicao.length > 0){
                 let cartaPesca = criarCarta(arrayTransicao[arrayTransicao.length-2], [], false, false);
+                arrayTransicao.splice(arrayTransicao.length-1, 1);
                 areaPesca.appendChild(cartaPesca);
-            }
-            if(localAdd.children.length > 1){
-                localAdd.children[0].remove();
             }
             break;
         }
-        posCarta++;
     }
     
     aparecer()
+
+    let areaFinal = document.getElementById('AreaFinal');
+    if(areaFinal.children[0].children[0].innerHTML == 'K' && areaFinal.children[1].children[0].innerHTML == 'K' && areaFinal.children[2].children[0].innerHTML == 'K' && areaFinal.children[3].children[0].innerHTML == 'K'){
+        alert('Parabéns, você ganhou!');
+        document.location.reload();
+    }
+
 }
 
 function aparecer(){
@@ -234,28 +258,29 @@ function aparecer(){
 
 function pescar(){
     let areaPesca = document.getElementById('pesca');
-    if(pescasPossiveis.length == 0){
-        let botaoReiniciarPesca =  document.getElementById('botao');
-        botaoReiniciarPesca.style.display = 'flex';
-    }
-    arrayTransicao.push(pescasPossiveis[0]);
-    pescasPossiveis.splice(0, 1);
-    
     if(areaPesca.children.length > 2){
         areaPesca.children[2].remove();
     }
+    if(pescasPossiveis.length == 1){
+        let botaoReiniciarPesca =  document.getElementById('botao');
+        botaoReiniciarPesca.style.display = 'flex';
+    }else{
+        arrayTransicao.push(pescasPossiveis[0]);
+        pescasPossiveis.splice(0, 1);
+        let carta = criarCarta(arrayTransicao[arrayTransicao.length-1], [], false, false);
+        areaPesca.appendChild(carta);
+    }
+
     
-    let carta = criarCarta(arrayTransicao[arrayTransicao.length-1], [], false, false);
-    areaPesca.appendChild(carta);
 }
 
 function devolver(){
-    while(arrayTransicao.length > 0){
+    let tam = arrayTransicao.length
+    for(let c = 0; c < tam; c++){
         pescasPossiveis.push(arrayTransicao[0]);
         arrayTransicao.splice(0, 1);
     }
     let botaoReiniciarPesca =  document.getElementById('botao');
     botaoReiniciarPesca.style.display = 'none';
-
-
+    pescasPossiveis.splice(0, 1);
 }
