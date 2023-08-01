@@ -284,3 +284,7 @@ function devolver(){
     botaoReiniciarPesca.style.display = 'none';
     pescasPossiveis.splice(0, 1);
 }
+
+function cancelar(){
+    blur.style.display = 'none';
+}

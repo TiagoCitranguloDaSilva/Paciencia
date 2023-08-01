@@ -85,24 +85,32 @@ body{
     display: none;
 }
 
-#blur_buttons{
+#blur_buttons {
     background-color: #702d00;
     height: 200px;
-    width: max-content;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    justify-content: center;
-    align-items: center;
+    grid-template-rows: 90px 90px;
+    align-content: center;
     border: 10px solid #502000;
     border-radius: 15px;
     box-shadow: 0px 0px 12px rgba(0, 0, 0, .8) inset;
 }
 
-#blur_buttons > button{
+div#botoes{
+    width: max-content;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+#blur_buttons button{
     cursor: pointer;
 }
 
-.botao_escolha{
+.botao_escolha, #cancelar button{
     margin: 10px;
     height: 25px;
     width: 100px;
@@ -114,12 +122,24 @@ body{
     box-shadow: 3px 3px 3px rgba(0, 0, 0, .2);
 }
 
-.botao_escolha:active{
+#cancelar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#cancelar button{
+    background-color: #ca2222;
+    color: white;
+    font-weight: 400;
+}
+
+.botao_escolha:active, #cancelar button:active{
     box-shadow: none;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, .6) inset;
 }
 
-.botao_escolha:disabled{
+.botao_escolha:disabled, #cancelar button:disabled{
     background-color: gray;
 }
 
