@@ -1,4 +1,5 @@
 
+var arrayTransicaoFinal = [];
 var arrayTransicao = [];
 var pescasPossiveis = [];
 var ordem = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
@@ -236,15 +237,30 @@ function finalizar(){
             }
             break;
         }
+        if(origem == elemento.classList[1]){
+            let areaFinalCarta = document.getElementById(origem);
+            if(arrayTransicaoFinal.length > 0){
+                let cartaFinal = criarCarta(arrayTransicaoFinal[arrayTransicaoFinal.length-2], [], false, false);
+                arrayTransicaoFinal.splice(arrayTransicaoFinal.length-1, 1);
+                areaFinalCarta.appendChild(cartaFinal);
+            }
+            break;
+        }
+        if(local == 'AreaFinal'){
+            arrayTransicaoFinal.push(conteudo);
+        }
     }
     
     aparecer()
 
     let areaFinal = document.getElementById('AreaFinal');
-    if(areaFinal.children[0].children[0].innerHTML == 'K' && areaFinal.children[1].children[0].innerHTML == 'K' && areaFinal.children[2].children[0].innerHTML == 'K' && areaFinal.children[3].children[0].innerHTML == 'K'){
-        alert('Parabéns, você ganhou!');
-        document.location.reload();
+    if(areaFinal.children[0].children.length > 0 && areaFinal.children[1].children.length > 0 && areaFinal.children[2].children.length && areaFinal.children[3].children.length){
+        if(areaFinal.children[0].children[0].innerHTML == 'K' && areaFinal.children[1].children[0].innerHTML == 'K' && areaFinal.children[2].children[0].innerHTML == 'K' && areaFinal.children[3].children[0].innerHTML == 'K'){
+            alert('Parabéns, você ganhou!');
+            document.location.reload();
+        }
     }
+   
 
 }
 
@@ -282,7 +298,6 @@ function devolver(){
     }
     let botaoReiniciarPesca =  document.getElementById('botao');
     botaoReiniciarPesca.style.display = 'none';
-    pescasPossiveis.splice(0, 1);
 }
 
 function cancelar(){
