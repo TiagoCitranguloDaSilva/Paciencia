@@ -140,7 +140,7 @@ function iniciarJogo(){
     let tam = CartasPossiveis.length;
 
     // Pra cada carta restante em 'CartasPossiveis' que não foi escolhida pra ficar na mesa
-    for(let c = 0; c <= tam; c++){
+    for(let c = 0; c < tam; c++){
 
         // Escolhida irá receber um valor aleatorio com base no tamanho da array 'CartasPossiveis'
         let escolhida = aleatorizar();
@@ -152,10 +152,7 @@ function iniciarJogo(){
         CartasPossiveis.splice(escolhida, 1);
 
     }
-
-    // contagem = pescasPossiveis.length;
 }
-
 
 // Função que retorna um valor aleatório com base no tamanho da array 'CartasPossiveis'
 function aleatorizar(){
@@ -420,8 +417,11 @@ function finalizar(){
     // O local da carta é igual a posição da carta clicada
     let localCarta = posCarta;
 
+    // Variável usada para dizer se deve ou não sair do while
+    let sair = false;
+
     // Enquanto a posição da carta for menor que a quantidade de cartas do local que a carta veio
-    while(posCarta < document.getElementById(origem).children.length){
+    while(posCarta < document.getElementById(origem).children.length && !sair){
 
         // Se o local for a área final
         if(local == 'AreaFinal'){
@@ -466,24 +466,22 @@ function finalizar(){
 
         // Remove a carta do local de origem
         atual.remove();
-        
-        // Variável usada para dizer se deve ou não sair do while
-        let sair = false;
+        console.log('removeu o ' + atual.innerHTML + ', ' + atual.classList[1])
 
         // Se a carta veio da área de pesca
         if(origem == 'pesca'){
 
             // Pega a área de pesca
             let areaPesca = document.getElementById(origem);
+            
+            // Apaga a carta que veio antes da 'arrayTransicao'
+            arrayTransicao.splice(arrayTransicao.length-1, 1);
 
             // Se o tamanho da 'arrayTransicao' for maior que 0
-            if(arrayTransicao.length > 0){
+            if(arrayTransicao.length > 1){
 
                 // Cria uma carta que é a carta de pesca que apareceu antes da que foi mudada de lugar
-                let cartaPesca = criarCarta(arrayTransicao[arrayTransicao.length-2], [], false, false);
-
-                // Apaga a carta que veio antes da 'arrayTransicao'
-                arrayTransicao.splice(arrayTransicao.length-1, 1);
+                let cartaPesca = criarCarta(arrayTransicao[arrayTransicao.length-1], [], false, false);
 
                 // Adiciona a carta na área de pesca
                 areaPesca.appendChild(cartaPesca);
@@ -580,17 +578,8 @@ function finalizar(){
             }
 
             // Adiciona o valor e o naipe da carta na 'arrayTransicaoFinal'
-            arrayTransicaoFinal[val].push([elemento.classList[1], elemento.innerHTML]);
+            arrayTransicaoFinal[key].push([elemento.classList[1], elemento.innerHTML]);
         }
-
-        // Se for pra sair do while
-        if(sair){
-
-            // Sai do while
-            break;
-
-        }
-
     }
     
     // Função com a função de verificar se deve retirar a classe 'escondida' e retirar se necessário 
@@ -646,8 +635,7 @@ function pescar(){
     }
 
     // Se não houver mais cartas possiveis para pescar
-    if(pescasPossiveis.length == 1){
-
+    if(pescasPossiveis.length == 0){
         // Pega o botão de reiniciar a pesca
         let botaoReiniciarPesca =  document.getElementById('botao');
 
@@ -693,6 +681,8 @@ function devolver(){
 
     // Faz o botão de pesca sumir
     botaoReiniciarPesca.style.display = 'none';
+
+
 
 }
 
