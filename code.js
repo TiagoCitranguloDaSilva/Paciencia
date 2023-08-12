@@ -17,7 +17,7 @@ var ordem = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 var origem;
 
 // De quantos em quantos pixels cada carta ficará distante da outra na mesa
-var absoluteLocal = 40;
+var absoluteLocal = 30;
 
 // Receberá o elemento clicado
 var elemento;
@@ -466,7 +466,6 @@ function finalizar(){
 
         // Remove a carta do local de origem
         atual.remove();
-        console.log('removeu o ' + atual.innerHTML + ', ' + atual.classList[1])
 
         // Se a carta veio da área de pesca
         if(origem == 'pesca'){
@@ -634,15 +633,17 @@ function pescar(){
 
     }
 
-    // Se não houver mais cartas possiveis para pescar
-    if(pescasPossiveis.length == 0){
+    // Se não houver mais cartas possiveis para pescar e não houver cartas na array de transição
+    if(pescasPossiveis.length == 0 && arrayTransicao.length > 0){
+
         // Pega o botão de reiniciar a pesca
         let botaoReiniciarPesca =  document.getElementById('botao');
 
         // Faz o botão de reiniciar a pesca aparecer 
         botaoReiniciarPesca.style.display = 'flex';
 
-    }else{
+    // Se tiver cartas possiveis a serem pescadas
+    }else if(pescasPossiveis != 0){
 
         // Adiciona a carta pescada na array de transição
         arrayTransicao.push(pescasPossiveis[0]);
@@ -656,6 +657,10 @@ function pescar(){
         // Adiciona a carta pescada na área de pesca
         areaPesca.appendChild(carta);
 
+    }else{
+
+        // Avisa que não há mais cartas para serem pescadas
+        alert('Não há mais cartas');
     }
 }
 

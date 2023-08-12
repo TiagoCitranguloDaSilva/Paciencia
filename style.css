@@ -181,10 +181,18 @@ div#botoes{
 
 #botao{
     display: none;
+    font-weight: bold;
+    font-size: 1em;
+    border: 2px solid black;
+    background-color: lightgray;
+    text-align: center;
 }
 
 .final{
-    height: var(--alturaCartas);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--alturaCartas) + 2px);
     width: var(--larguraCartas);
     border: 1px solid lightgray;
 }
@@ -229,7 +237,7 @@ div#botoes{
 #texto{
     grid-column-start: 1;
     grid-column-end: 5;
-    margin-top: 7px;
+    margin-top: 5px;
     padding: 2px;
 }
 
