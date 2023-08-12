@@ -467,6 +467,9 @@ function finalizar(){
         // Remove a carta do local de origem
         atual.remove();
         
+        // Variável usada para dizer se deve ou não sair do while
+        let sair = false;
+
         // Se a carta veio da área de pesca
         if(origem == 'pesca'){
 
@@ -488,42 +491,49 @@ function finalizar(){
             }
 
             // Sai do while
-            break;
+            sair = true
         }
 
         // Se a carta movida tiver vindo da área final
-
         if(origem == elemento.classList[1]){
 
             // Pega a área final em que a carta estava
             let areaFinalCarta = document.getElementById(origem);
 
-            
-            let val;
+            // Variável que recebe a chave do respectivo naipe
+            let key;
+
+            // Switch de verificação do naipe da carta clicada
             switch(elemento.classList[1]){
+
+                // Se for do naipe de espada
                 case 'espada':
-                    val = 0;
+                    key = 0;
                     break;
+
+                // Se for do naipe de copas
                 case 'copas':
-                    val = 1;
+                    key = 1;
                     break;
+
+                // Se for do naipe de paus
                 case 'paus':
-                    val = 2;
+                    key = 2;
                     break;
+
+                // Se for do naipe de ouros
                 case 'ouros':
-                    val = 3;
+                    key = 3;
                     break;
                 
             }
 
-            console.log(arrayTransicaoFinal)
-
+            
             // Se o tamanho da array de transição for maior que 0
-            if(arrayTransicaoFinal[val].length > 0){
-
+            if(arrayTransicaoFinal[val].length > 1){
+                                
                 // Apaga a carta anterior da array de transição de cartas na área final
                 arrayTransicaoFinal[val].splice(arrayTransicaoFinal[val].length-1, 1);
-
 
                 // A carta anterior que estaria antes da carta movida
                 let cartaFinal = criarCarta(arrayTransicaoFinal[val][arrayTransicaoFinal[val].length-1], [], false, false);
@@ -534,30 +544,53 @@ function finalizar(){
             }
 
             // Sai do while
-            break;
+            sair = true;
 
         }
 
         // Se o local de destino for a área final
         if(local == 'AreaFinal'){
-            let val;
+
+            // Variável que recebe a chave do respectivo naipe
+            let key;
+
+            // Switch de verificação do naipe da carta clicada
             switch(elemento.classList[1]){
+
+                // Se for do naipe de espada
                 case 'espada':
-                    val = 0;
+                    key = 0;
                     break;
+
+                // Se for do naipe de copas
                 case 'copas':
-                    val = 1;
+                    key = 1;
                     break;
+
+                // Se for do naipe de paus
                 case 'paus':
-                    val = 2;
+                    key = 2;
                     break;
+
+                // Se for do naipe de ouros
                 case 'ouros':
-                    val = 3;
+                    key = 3;
                     break;
+                
             }
+
             // Adiciona o valor e o naipe da carta na 'arrayTransicaoFinal'
             arrayTransicaoFinal[val].push([elemento.classList[1], elemento.innerHTML]);
         }
+
+        // Se for pra sair do while
+        if(sair){
+
+            // Sai do while
+            break;
+
+        }
+
     }
     
     // Função com a função de verificar se deve retirar a classe 'escondida' e retirar se necessário 
@@ -578,7 +611,7 @@ function finalizar(){
             // Recarrega a página
             document.location.reload();
 
-            }
+        }
     }
 }
 
