@@ -2,7 +2,7 @@
 // Definição de variáveis
 
 // Array de transição de cartas na área final
-var arrayTransicaoFinal = [];
+var arrayTransicaoFinal = [[], [], [], []];
 
 // Array de transição da área de pesca
 var arrayTransicao = [];
@@ -492,22 +492,45 @@ function finalizar(){
         }
 
         // Se a carta movida tiver vindo da área final
+
         if(origem == elemento.classList[1]){
 
             // Pega a área final em que a carta estava
             let areaFinalCarta = document.getElementById(origem);
 
-            // Se o tamanho da array de transição for maior que 0
-            if(arrayTransicaoFinal.length > 0){
+            
+            let val;
+            switch(elemento.classList[1]){
+                case 'espada':
+                    val = 0;
+                    break;
+                case 'copas':
+                    val = 1;
+                    break;
+                case 'paus':
+                    val = 2;
+                    break;
+                case 'ouros':
+                    val = 3;
+                    break;
+                
+            }
 
-                // A carta anterior que estaria antes da carta movida
-                let cartaFinal = criarCarta(arrayTransicaoFinal[arrayTransicaoFinal.length-2], [], false, false);
+            console.log(arrayTransicaoFinal)
+
+            // Se o tamanho da array de transição for maior que 0
+            if(arrayTransicaoFinal[val].length > 0){
 
                 // Apaga a carta anterior da array de transição de cartas na área final
-                arrayTransicaoFinal.splice(arrayTransicaoFinal.length-1, 1);
+                arrayTransicaoFinal[val].splice(arrayTransicaoFinal[val].length-1, 1);
+
+
+                // A carta anterior que estaria antes da carta movida
+                let cartaFinal = criarCarta(arrayTransicaoFinal[val][arrayTransicaoFinal[val].length-1], [], false, false);
 
                 // Adiciona a carta anterior na área final
                 areaFinalCarta.appendChild(cartaFinal);
+
             }
 
             // Sai do while
@@ -517,10 +540,23 @@ function finalizar(){
 
         // Se o local de destino for a área final
         if(local == 'AreaFinal'){
-
+            let val;
+            switch(elemento.classList[1]){
+                case 'espada':
+                    val = 0;
+                    break;
+                case 'copas':
+                    val = 1;
+                    break;
+                case 'paus':
+                    val = 2;
+                    break;
+                case 'ouros':
+                    val = 3;
+                    break;
+            }
             // Adiciona o valor e o naipe da carta na 'arrayTransicaoFinal'
-            arrayTransicaoFinal.push(conteudo);
-
+            arrayTransicaoFinal[val].push([elemento.classList[1], elemento.innerHTML]);
         }
     }
     
@@ -542,9 +578,10 @@ function finalizar(){
             // Recarrega a página
             document.location.reload();
 
-        }
+            }
     }
 }
+
 
 // Função com a função de verificar se deve retirar a classe 'escondida' e retirar se necessário 
 function aparecer(){
@@ -631,5 +668,5 @@ function cancelar(){
 
     // Retira o blur e o menu de escolha
     blur.style.display = 'none';
-    
+
 }
