@@ -527,13 +527,13 @@ function finalizar(){
 
             
             // Se o tamanho da array de transição for maior que 0
-            if(arrayTransicaoFinal[val].length > 1){
+            if(arrayTransicaoFinal[key].length > 1){
                                 
                 // Apaga a carta anterior da array de transição de cartas na área final
-                arrayTransicaoFinal[val].splice(arrayTransicaoFinal[val].length-1, 1);
+                arrayTransicaoFinal[key].splice(arrayTransicaoFinal[key].length-1, 1);
 
                 // A carta anterior que estaria antes da carta movida
-                let cartaFinal = criarCarta(arrayTransicaoFinal[val][arrayTransicaoFinal[val].length-1], [], false, false);
+                let cartaFinal = criarCarta(arrayTransicaoFinal[key][arrayTransicaoFinal[key].length-1], [], false, false);
 
                 // Adiciona a carta anterior na área final
                 areaFinalCarta.appendChild(cartaFinal);
