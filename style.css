@@ -185,7 +185,14 @@ div#botoes{
     font-size: 1em;
     border: 2px solid black;
     background-color: lightgray;
-    text-align: center;
+    background-image: url('img/Return.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    /* text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center; */
 }
 
 .final{
