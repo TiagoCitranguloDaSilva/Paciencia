@@ -1,4 +1,7 @@
 
+import {Carta} from "/js/Carta.js";
+import {Coluna} from "/js/Coluna.js";
+
 // Definição de variáveis
 
 // Array de transição de cartas na área final
@@ -50,8 +53,14 @@ for(let c = 0; c < Naipes.length; c++){
         let valor = ordem[d];
 
         // Ele adiciona o valor da carta e seu naipe na array 'CartasPossiveis'
-        CartasPossiveis.push([Naipes[c], valor]);
+        // CartasPossiveis.push([Naipes[c], valor]);
+        CartasPossiveis.push(criarElementoCarta(Naipes[c], valor))
     }
+}
+
+function criarElementoCarta(naipe, valor){
+    let carta = new Carta(valor, naipe);
+    return carta;
 }
 
 // Depois das preparações acima, inicia-se o jogo
@@ -63,38 +72,11 @@ function iniciarJogo(){
     // Um for que roda pela quantidade de colunas que a mesa vai ter
     for(let c = 0; c < qtdeColunas; c++){
 
-        // Cria a section que vai ser a área em que ficará a coluna
-        let areacoluna = document.createElement('section');
+        let elementoColuna = new Coluna();
 
-        // Adiciona área na mesa
-        mesa.appendChild(areacoluna);
+        Coluna.definirContColuna(c + 1);
 
-        // Cria o sinalizador, que é uma section que diz qual é o número da coluna atual
-        let sinalizador = document.createElement('section');
-
-        // Adiciona o número da coluna no sinalizador
-        sinalizador.innerHTML = c+1;
-
-        // Coloca a classe usada no CSS 'sinalizador'
-        sinalizador.classList.add('sinalizador');
-
-        // Coloca o sinalizador na coluna
-        areacoluna.appendChild(sinalizador);
-
-        // Cria a coluna como uma section
-        let coluna = document.createElement('section');
-
-        // Adiciona o id da coluna como 'coluna' + o numero da coluna. Ex: 'coluna2'
-        coluna.id = 'coluna'+(c+1);
-
-        // Adiciona na coluna a classe usada no CSS 'coluna' 
-        coluna.classList.add('coluna');
-
-        // Adiciona a coluna na área da coluna
-        areacoluna.appendChild(coluna);
-
-        // Pega a coluna que acabou de ser criada
-        let colunaAtual = document.getElementById('coluna'+(c+1));
+        elementoColuna.createHTMLElement(mesa);
 
         // Variável que irá guardar os valores da carta que foi escolhida aleatoriamente
         let escolhido;
@@ -102,37 +84,46 @@ function iniciarJogo(){
         // É um for que irá colocar a quantidade de cartas com base no número da coluna, tipo, coluna 1 terá 1 carta, a coluna 2 terá 2 cartas e por ai vai
         for(let d = 0; d <= c; d++){
 
-            // Cria a array que irá guardar as classes extras que serão colocadas nas cartas
             let classes = [];
-
-            // Ele escolhe uma das arrays dentro de 'CartasPossiveis'
-            escolhido = aleatorizar();
-
-            // Entrará quando todas as cartas forem criadas, menos a ultima de cada coluna
             if(d != c){
 
                 // Adiciona a classe 'escondida' para a array de classes extras
                 classes.push('escondida');
             }
 
+            // Cria a array que irá guardar as classes extras que serão colocadas nas cartas
+
+            // Ele escolhe uma das arrays dentro de 'CartasPossiveis'
+            escolhido = aleatorizar();
+
+            let carta = escolhido.criarCartaHTML(classes)
+
+
+            // Entrará quando todas as cartas forem criadas, menos a ultima de cada coluna
+            
+
             // Chama a classe que cria a carta e retorna o elemento, você envia os valores (escolhido), as classes extras (classes), e se quando criar a carte, deve apaga-la do cartasPossiveis (true)
-            let cartaAtual = criarCarta(escolhido, classes, true);
+            // let cartaAtual = criarCarta(escolhido, classes, true);
+
 
             // Cria um contagem que começa com 0
             let contagem = 0 ;   
 
             // Um for que roda pela quantidade de cartas que já foram adicionadas na coluna atual
-            for(let e = 0; e < colunaAtual.children.length; e++){
+            for(let e = 0; e < elementoColuna.pegarQtdeCartas(); e++){
 
                 // Pra cada carta adicionada na coluna irá adicionar o valor do 'absoluteLocal' na variável 'contagem'
                 contagem += absoluteLocal; 
             }
 
+            
+            
             // Adiciona a carta na posição da contagem
-            cartaAtual.style.top = contagem+'px';
-
-            // Adiciona a carta na coluna
-            colunaAtual.appendChild(cartaAtual);
+            carta.style.top = contagem+'px';
+            
+            elementoColuna.adicionarCarta(escolhido, carta);
+            elementoColuna.definirQtdeCartas(1);
+            elementoColuna.adicionarCartaHTML(carta);
         }
     }
 
@@ -146,10 +137,7 @@ function iniciarJogo(){
         let escolhida = aleatorizar();
 
         // Adiciona na array 'pescasPossiveis' a carta que foi escolhida aleatoriamente
-        pescasPossiveis.push(CartasPossiveis[escolhida]);
-
-        // Apaga a carta escolhida da array 'CartasPossiveis'
-        CartasPossiveis.splice(escolhida, 1);
+        pescasPossiveis.push(escolhida);
 
     }
 }
@@ -158,79 +146,15 @@ function iniciarJogo(){
 function aleatorizar(){
 
     // Retorna o valor aleatório
-    return Math.floor(Math.random() * (CartasPossiveis.length));
+    let valorEscolhido = Math.floor(Math.random() * (CartasPossiveis.length));
+    let carta = CartasPossiveis[valorEscolhido];
+    CartasPossiveis.splice(valorEscolhido, 1);
+    return carta;
 
 }
 
-// Uma função que cria cartas, você da os valores que vão ser adicionados, as classes extras, se deve remover da array 'CartasPossiveis' e se o valor fornecido está dentro de 'CartasPossiveis'
-function criarCarta(escolha, classes, removerCartasPossiveis = false, inCartasPossiveis = true){
-    
-    // Cria a variável que receberá os valores escolhidos
-    let escolhida;
-
-    // Se foi foi fornecido o true, que significa que os valores estão dentro de 'CartasPossiveis'
-    if(inCartasPossiveis){
-
-        // 'escolhida' recebe a carta escolhida
-        escolhida = CartasPossiveis[escolha];
-    }else{
-
-        // 'escolhida' recebe a escolha
-        escolhida = escolha;
-    }
-
-    // Cria a carta como uma section
-    let carta = document.createElement('section');
-
-    // Adiciona a classe 'cartas' na carta
-    carta.classList.add('cartas');
-
-    // Um for que irá rodar por cada classe extra passada 
-    for(let c = 0; c < classes.length; c++){
-
-        // Adiciona a classe extra na carta
-        carta.classList.add(classes[c]);
-    }
-
-    // Adiciona o naipe vindo dos valores escolhidos nas classes da carta
-    carta.classList.add(escolhida[0]);
-
-    // Se o naipe da carta for preto
-    if(escolhida[0] == 'paus' || escolhida[0] == 'espada'){
-
-        // Adiciona a classe 'preto' na carta
-        carta.classList.add('preto');
-
-    }else{
-
-        // Adiciona a classe 'vermelho' na carta
-        carta.classList.add('vermelho');
-
-    }
-
-    // Coloca o onclick na carta que irá chamar a função 'mover' e passará o elemento clicado como parâmetro
-    carta.setAttribute('onclick', 'mover(this)');
-
-    // Coloca o valor da carta no texto da carta
-    carta.innerHTML = escolhida[1];
-
-    // Adiciona o naipe da carta e o valor dela como id
-    carta.id = escolhida[0]+'-'+escolhida[1];
-
-    // Se foi escolhido que se deve retirar a carta de 'CartasPossiveis'
-    if(removerCartasPossiveis){
-
-        // Apaga os valores escolhidos da array 'CartasPossiveis'
-        CartasPossiveis.splice(escolha, 1);
-
-    }
-
-    // Adiciona um dado extra na carta, o valor dela
-    carta.setAttribute('data-content', escolhida[1]);
-
-    // Retorna o elemento
-    return carta;
-
+function criarCarta(){
+    return "";
 }
 
 // Função chamada ao clicar em uma carta
