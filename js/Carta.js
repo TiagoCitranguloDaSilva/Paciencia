@@ -1,4 +1,5 @@
-export class  Carta {
+// export
+class Carta {
 
     _valorNumerico;
     valorSimbolico;

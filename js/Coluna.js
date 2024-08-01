@@ -1,5 +1,5 @@
-
-export class Coluna{
+// export
+ class Coluna{
 
     static contColuna;
 

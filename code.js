@@ -1,6 +1,6 @@
 
-import {Carta} from "/js/Carta.js";
-import {Coluna} from "/js/Coluna.js";
+// import {Carta} from "/js/Carta.js";
+// import {Coluna} from "/js/Coluna.js";
 
 // Definição de variáveis
 
@@ -60,6 +60,7 @@ for(let c = 0; c < Naipes.length; c++){
 
 function criarElementoCarta(naipe, valor){
     let carta = new Carta(valor, naipe);
+    console.log(carta)
     return carta;
 }
 
