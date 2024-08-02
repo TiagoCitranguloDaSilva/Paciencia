@@ -7,6 +7,8 @@
 // Array de transição de cartas na área final
 var arrayTransicaoFinal = [[], [], [], []];
 
+var colunas = []
+
 // Array de transição da área de pesca
 var arrayTransicao = [];
 
@@ -25,11 +27,13 @@ var absoluteLocal = 30;
 // Receberá o elemento clicado
 var elemento;
 
+var coluna = 0;
+
 // Local de destino que uma carta terá ao ser clicada
 var local;
 
 // Div do blur
-var blur = document.getElementById('blur');
+var blurFilter = document.getElementById('blur');
 
 // A mesa
 var mesa = document.getElementById('container');
@@ -126,6 +130,7 @@ function iniciarJogo(){
             elementoColuna.definirQtdeCartas(1);
             elementoColuna.adicionarCartaHTML(carta);
         }
+        colunas.push(elementoColuna);
     }
 
     // Tam irá guardar o tamanho da array 'CartasPossiveis'
@@ -162,7 +167,7 @@ function criarCarta(){
 function mover(element){
 
     // Coloca blur na tela
-    blur.style.display = 'flex';
+    blurFilter.style.display = 'flex';
 
     // Define a variável 'elemento' como o elemento clicado
     elemento = element;
@@ -172,7 +177,7 @@ function mover(element){
 function escolha(valorEscolha){
 
     // Retira o blur da tela
-    blur.style.display = 'none';
+    blurFilter.style.display = 'none';
 
     // Qual local você escolheu
     switch(valorEscolha){
@@ -378,7 +383,11 @@ function finalizar(){
         conteudo = [atual.classList[1], atual.innerHTML];
 
         // A 'cartaAtual' recebe a carta depois de enviar o valor, nenhuma classe extra, sem retirar do 'CartasPossives' e avisa que a carta não esta dentro de 'CartasPossiveis'
-        let cartaAtual = criarCarta(conteudo, [], false, false);
+        // let cartaAtual = criarCarta(conteudo, [], false, false);
+        let elementoColunaAtual = colunas[parseInt(origem.slice(6, 7)) - 1]
+        let elementoCartaAtual = elementoColunaAtual.devolverCarta(localCarta)
+        let cartaAtual = elementoCartaAtual.devolverCartaHTML()
+        console.log(cartaAtual)
 
         // A altura que a carta será colocada é o número de cartas no local de destino multiplicado pela 'absoluteLocal'
         let altura = (localAdd.children.length) * absoluteLocal;
@@ -620,6 +629,6 @@ function devolver(){
 function cancelar(){
 
     // Retira o blur e o menu de escolha
-    blur.style.display = 'none';
+    blurFilter.style.display = 'none';
 
 }

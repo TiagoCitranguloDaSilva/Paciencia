@@ -69,4 +69,10 @@
         this.colunaHTML.appendChild(carta);
     }
 
+    devolverCarta(carta){
+        if(carta >= 0 && carta <= this._cartas.length){
+            return this._cartas[carta];
+        }
+    }
+
 }

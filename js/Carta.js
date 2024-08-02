@@ -4,6 +4,7 @@ class Carta {
     _valorNumerico;
     valorSimbolico;
     naipe;
+    cartaHTML;
 
     constructor(valorNumerico, naipe){
         this.naipe = naipe;
@@ -75,8 +76,15 @@ class Carta {
         carta.setAttribute('data-content', this.valorSimbolico);
 
         // Retorna o elemento
+
+        this.cartaHTML = carta;
         return carta;
 
+    }
+
+    devolverCartaHTML(){
+        console.log("entrou")
+        return this.cartaHTML
     }
 
 }
