@@ -4,7 +4,6 @@ class Carta {
     _valorNumerico;
     valorSimbolico;
     naipe;
-    cartaHTML;
 
     constructor(valorNumerico, naipe){
         this.naipe = naipe;
@@ -82,9 +81,7 @@ class Carta {
 
     }
 
-    devolverCartaHTML(){
-        console.log("entrou")
-        return this.cartaHTML
-    }
+
+
 
 }

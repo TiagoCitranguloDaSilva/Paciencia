@@ -325,7 +325,7 @@ function finalizar(){
     }else{
 
         // O local de destino é a coluna escolhida
-        localAdd = document.getElementById(local);
+        localAdd = colunas[parseInt(local.slice(6, 7))-1];
 
     }
     
@@ -386,17 +386,16 @@ function finalizar(){
         // let cartaAtual = criarCarta(conteudo, [], false, false);
         let elementoColunaAtual = colunas[parseInt(origem.slice(6, 7)) - 1]
         let elementoCartaAtual = elementoColunaAtual.devolverCarta(localCarta)
-        let cartaAtual = elementoCartaAtual.devolverCartaHTML()
-        console.log(cartaAtual)
+        let cartaAtual = elementoCartaAtual;
 
         // A altura que a carta será colocada é o número de cartas no local de destino multiplicado pela 'absoluteLocal'
-        let altura = (localAdd.children.length) * absoluteLocal;
+        let altura = (localAdd.pegarQtdeCartas()) * absoluteLocal;
 
         // Coloca a carta na altura definida anteriormente
-        cartaAtual.style.top = altura+'px';
+        cartaAtual[1].style.top = altura+'px';
 
         // Adiciona a carta ao destino
-        localAdd.appendChild(cartaAtual);
+        localAdd.adicionarElementoCartaHtml(cartaAtual[0], cartaAtual[1]);
 
         // Remove a carta do local de origem
         atual.remove();

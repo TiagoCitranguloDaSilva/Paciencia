@@ -66,7 +66,17 @@
     }
 
     adicionarCartaHTML(carta){
+        console.trace();
+        console.warn('adicionarCartaHTML')
+        console.log('carta', carta);
+        console.log('this', this.colunaHTML);
         this.colunaHTML.appendChild(carta);
+    }
+
+    adicionarElementoCartaHtml(elemento, elementoHTML){
+
+        this.adicionarCarta(elemento, elementoHTML)
+        this.adicionarCartaHTML(elementoHTML)
     }
 
     devolverCarta(carta){
