@@ -66,23 +66,32 @@
     }
 
     adicionarCartaHTML(carta){
-        console.trace();
-        console.warn('adicionarCartaHTML')
-        console.log('carta', carta);
-        console.log('this', this.colunaHTML);
         this.colunaHTML.appendChild(carta);
     }
 
     adicionarElementoCartaHtml(elemento, elementoHTML){
-
         this.adicionarCarta(elemento, elementoHTML)
         this.adicionarCartaHTML(elementoHTML)
+        this.adicionaUmQuantidadeCartas()
     }
 
     devolverCarta(carta){
         if(carta >= 0 && carta <= this._cartas.length){
             return this._cartas[carta];
         }
+    }
+
+    removerCarta(posicao){
+        this._cartas.splice(posicao, 1)
+        this.removerUmQuantidadeCartas()
+    }
+
+    adicionaUmQuantidadeCartas(){
+        this._qtdeCartas += 1
+    }
+
+    removerUmQuantidadeCartas(){
+        this._qtdeCartas -= 1
     }
 
 }

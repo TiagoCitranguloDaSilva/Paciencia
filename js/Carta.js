@@ -4,6 +4,7 @@ class Carta {
     _valorNumerico;
     valorSimbolico;
     naipe;
+    id;
 
     constructor(valorNumerico, naipe){
         this.naipe = naipe;
@@ -30,7 +31,7 @@ class Carta {
         }
     }
 
-    criarCartaHTML(classes){
+    criarCartaHTML(classes = []){
         // Cria a carta como uma section
         let carta = document.createElement('section');
 
@@ -67,8 +68,11 @@ class Carta {
         // Coloca o valor da carta no texto da carta
         carta.innerHTML = this.valorSimbolico;
 
+        this.id = this.naipe+'-'+this.valorSimbolico;
+
         // Adiciona o naipe da carta e o valor dela como id
-        carta.id = this.naipe+'-'+this.valorSimbolico;
+        carta.id = this.id
+
 
 
         // Adiciona um dado extra na carta, o valor dela
@@ -78,6 +82,12 @@ class Carta {
 
         this.cartaHTML = carta;
         return carta;
+
+    }
+
+    devolverIdCarta(){
+
+        return this.id;
 
     }
 

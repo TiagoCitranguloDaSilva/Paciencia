@@ -7,6 +7,8 @@
 // Array de transição de cartas na área final
 var arrayTransicaoFinal = [[], [], [], []];
 
+var elementoAreaPesca = new AreaPesca();
+
 var colunas = []
 
 // Array de transição da área de pesca
@@ -64,7 +66,6 @@ for(let c = 0; c < Naipes.length; c++){
 
 function criarElementoCarta(naipe, valor){
     let carta = new Carta(valor, naipe);
-    console.log(carta)
     return carta;
 }
 
@@ -143,7 +144,7 @@ function iniciarJogo(){
         let escolhida = aleatorizar();
 
         // Adiciona na array 'pescasPossiveis' a carta que foi escolhida aleatoriamente
-        pescasPossiveis.push(escolhida);
+        elementoAreaPesca.adicionarCarta(escolhida)
 
     }
 }
@@ -310,11 +311,16 @@ function finalizar(){
     // 'origem' recebe o id do local que a carta clicada veio 
     origem = elemento.parentElement.id;
 
+    colunaOrigem = colunas[parseInt(origem.slice(6, 7)) - 1]
+
     // Local que a carta será adicionada
     let localAdd;
 
     // Recebe a quantidade de cartas do local que a carta veio originalmente
-    let posCarta = document.getElementById(origem).children.lengh;
+    // let posCarta = document.getElementById(origem).children.lengh;
+
+    let posCarta = colunaOrigem.pegarQtdeCartas();
+
 
     // Se o destino for a área final
     if(local == 'AreaFinal'){
@@ -325,15 +331,18 @@ function finalizar(){
     }else{
 
         // O local de destino é a coluna escolhida
-        localAdd = colunas[parseInt(local.slice(6, 7))-1];
+        localAdd = colunas[parseInt(local.slice(6, 7)) - 1];
+        
 
     }
+
+
     
     // Um for que roda pela quantidade de cartas no local de origem
-    for(let c = 0; c < document.getElementById(origem).children.length; c++){
+    for(let c = 0; c < colunaOrigem.pegarQtdeCartas(); c++){
 
         // Se o id da carta clicada for o mesmo do elemento que esta sendo acessado pelo for
-        if(elemento.id == document.getElementById(origem).children[c].id){
+        if(elemento.id == colunas[parseInt(origem.slice(6, 7)) - 1].devolverCarta(c)[0].devolverIdCarta()){
 
             // A 'posCarta' receberá o valor do for
             posCarta = c;
@@ -350,14 +359,14 @@ function finalizar(){
     // Variável usada para dizer se deve ou não sair do while
     let sair = false;
 
+    let qtdeCartas = colunaOrigem.pegarQtdeCartas()
     // Enquanto a posição da carta for menor que a quantidade de cartas do local que a carta veio
-    while(posCarta < document.getElementById(origem).children.length && !sair){
-
+    while(posCarta < qtdeCartas && !sair){
         // Se o local for a área final
         if(local == 'AreaFinal'){
 
             // Se a quantidade de cartas no local de origem menos a posição da carta clicada for maior que 1
-            if(document.getElementById(origem).children.length - posCarta > 1){
+            if(colunaOrigem.pegarQtdeCartas() - posCarta > 1){
 
                 // Sai da função sem mover a carta
                 return;
@@ -377,15 +386,14 @@ function finalizar(){
         cont++;
 
         // 'atual' recebe a carta atual vindo pelo while
-        let atual = document.getElementById(origem).children[localCarta];
+        let atual = colunaOrigem.devolverCarta(localCarta)[1];
 
         // Pega o valor da carta atual
         conteudo = [atual.classList[1], atual.innerHTML];
 
         // A 'cartaAtual' recebe a carta depois de enviar o valor, nenhuma classe extra, sem retirar do 'CartasPossives' e avisa que a carta não esta dentro de 'CartasPossiveis'
         // let cartaAtual = criarCarta(conteudo, [], false, false);
-        let elementoColunaAtual = colunas[parseInt(origem.slice(6, 7)) - 1]
-        let elementoCartaAtual = elementoColunaAtual.devolverCarta(localCarta)
+        let elementoCartaAtual = colunaOrigem.devolverCarta(localCarta)
         let cartaAtual = elementoCartaAtual;
 
         // A altura que a carta será colocada é o número de cartas no local de destino multiplicado pela 'absoluteLocal'
@@ -396,9 +404,13 @@ function finalizar(){
 
         // Adiciona a carta ao destino
         localAdd.adicionarElementoCartaHtml(cartaAtual[0], cartaAtual[1]);
+        colunaOrigem.removerCarta(posCarta);
+
+        // AKIIIIIIIIIIIIIIIIIIII
+
 
         // Remove a carta do local de origem
-        atual.remove();
+        // atual.remove();
 
         // Se a carta veio da área de pesca
         if(origem == 'pesca'){
@@ -512,6 +524,7 @@ function finalizar(){
             // Adiciona o valor e o naipe da carta na 'arrayTransicaoFinal'
             arrayTransicaoFinal[key].push([elemento.classList[1], elemento.innerHTML]);
         }
+        posCarta++;
     }
     
     // Função com a função de verificar se deve retirar a classe 'escondida' e retirar se necessário 
@@ -534,6 +547,7 @@ function finalizar(){
 
         }
     }
+    console.log("Qtde: " + colunaOrigem.pegarQtdeCartas())
 }
 
 
@@ -556,18 +570,17 @@ function aparecer(){
 function pescar(){
 
     // Pega a área de pesca
-    let areaPesca = document.getElementById('pesca');
 
     // Se a área de pesca já tiver uma carta antes de você clicar no botão 
-    if(areaPesca.children.length > 2){
+    if(elementoAreaPesca.haCartaAmostra()){
 
         // Retira a carta anterior
-        areaPesca.children[2].remove();
+        elementoAreaPesca.removerCartaAmostra();
 
     }
 
     // Se não houver mais cartas possiveis para pescar e não houver cartas na array de transição
-    if(pescasPossiveis.length == 0 && arrayTransicao.length > 0){
+    if(elementoAreaPesca.devolverQtdeCartas() == 0 && elementoAreaPesca.devolverQtdeCartasTransicao() > 0){
 
         // Pega o botão de reiniciar a pesca
         let botaoReiniciarPesca =  document.getElementById('botao');
@@ -576,22 +589,11 @@ function pescar(){
         botaoReiniciarPesca.style.display = 'flex';
 
     // Se tiver cartas possiveis a serem pescadas
-    }else if(pescasPossiveis != 0){
+    }else if(elementoAreaPesca.devolverQtdeCartas() != 0){
 
-        // Adiciona a carta pescada na array de transição
-        arrayTransicao.push(pescasPossiveis[0]);
-
-        // Retira a carta pescada das pescas possiveis
-        pescasPossiveis.splice(0, 1);
-
-        // Cria a carta pescada
-        let carta = criarCarta(arrayTransicao[arrayTransicao.length-1], [], false, false);
-
-        // Adiciona a carta pescada na área de pesca
-        areaPesca.appendChild(carta);
+        elementoAreaPesca.pescar()
 
     }else{
-
         // Avisa que não há mais cartas para serem pescadas
         alert('Não há mais cartas');
     }
