@@ -16,3 +16,8 @@ Paciência é um jogo de cartas, onde o objetivo é amontoar o baralho de forma 
 
 ![Vídeo do jogo](https://github.com/TiagoCitranguloDaSilva/assets/blob/main/Paciencia/Jogando.gif?raw=true)
 
+#Contato
+
+Caso queira entrar em contato, pode me enviar um email por este endereço:
+
+[Email](mailto:tiagocitrangulo256@gmail.com)
