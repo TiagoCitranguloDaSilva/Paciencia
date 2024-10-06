@@ -21,6 +21,7 @@ body{
     margin: 10px 0px;
     height: min-content;
     position: relative;
+    min-height: 6em;
 }
 
 #mesa{
@@ -74,7 +75,7 @@ body{
     justify-content: space-between;
 
 }
-
+/* 
 #blur{
     position: fixed;
     inset: 0;
@@ -142,7 +143,7 @@ div#botoes{
 
 .botao_escolha:disabled, #cancelar button:disabled{
     background-color: gray;
-}
+} */
 
 #pesca{
     box-sizing: border-box;
@@ -203,6 +204,30 @@ div#botoes{
     width: var(--larguraCartas);
     border: 1px solid lightgray;
 }
+
+.final{
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+}
+
+
+
+#espada{
+    background-image: url("img/espada-pronto-opaco.png");
+}
+#copas{
+    background-image: url("img/Copas-pronto-opaco.png");
+}
+#ouros{
+    background-image: url("img/Ouros-pronto-opaco.png");
+}
+#paus{
+    background-image: url("img/paus-pronto-opaco.png");
+}
+
+
 
 #AreaFinal{
     position: absolute;
